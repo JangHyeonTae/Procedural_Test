@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class ProceduralAlgorithm
 {
@@ -19,6 +20,22 @@ public static class ProceduralAlgorithm
         }
 
         return path;
+    }
+
+    public static List<Vector2Int> RandomWalkCorridor(Vector2Int startPos, int corridorLength)
+    {
+        List<Vector2Int> corridor = new();
+        var direction = Direction2D.GetRandomCardinalDirection();
+        var currentPos = startPos;
+        corridor.Add(currentPos);
+
+        for (int i = 0; i < corridorLength; i++)
+        {
+            currentPos += direction;
+            corridor.Add(currentPos);
+        }
+
+        return corridor;
     }
 }
 
