@@ -5,9 +5,9 @@ using UnityEngine;
 
 public static class WallGenerator
 {
-    public static void CreateWalls(HashSet<Vector2Int> floorPos, TileMapVisualizer tilemapVisualizer)
+    public static void CreateWalls(HashSet<Vector2Int> floorsPos, TileMapVisualizer tilemapVisualizer)
     {
-        var basicWallPos = FindWallsInDirections(floorPos, Direction2D.cardinalDirectionsList);
+        var basicWallPos = FindWallsInDirections(floorsPos, Direction2D.cardinalDirectionsList);
     
         foreach (var pos in basicWallPos)
         {
@@ -15,22 +15,22 @@ public static class WallGenerator
         }
     }
 
-    private static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorPos, List<Vector2Int> directionList)
+    private static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorsPos, List<Vector2Int> directionList)
     {
-        HashSet<Vector2Int> wallpos = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> wallspos = new HashSet<Vector2Int>();
 
-        foreach(var pos in floorPos)
+        foreach(var pos in floorsPos)
         {
             foreach(var direction in directionList)
             {
                 var neighbourPos = pos + direction;
-                if (!floorPos.Contains(neighbourPos))
+                if (!floorsPos.Contains(neighbourPos))
                 {
-                    wallpos.Add(neighbourPos);
+                    wallspos.Add(neighbourPos);
                 }
             }    
         }
 
-        return wallpos;
+        return wallspos;
     }
 }

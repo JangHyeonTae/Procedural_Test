@@ -6,34 +6,34 @@ using UnityEngine;
 
 public class SimpleRandomMap : AbstractDungeonGenerator
 {
-    [SerializeField] private SimpleRandomWalkSO randomWalkParameters;
+    [SerializeField] protected SimpleRandomWalkSO randomWalkParameters;
 
     protected override void RunProceduralGeneration()
     {
-        HashSet<Vector2Int> floorPositions = RunRandomwalk(randomWalkParameters);
+        HashSet<Vector2Int> floorsPos = RunRandomWalk(randomWalkParameters, startPos);
         tilemapVisualizer.Clear();
-        tilemapVisualizer.PaintFloorTiles(floorPositions);
-        WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        tilemapVisualizer.PaintFloorTiles(floorsPos);
+        WallGenerator.CreateWalls(floorsPos, tilemapVisualizer);
     }
 
 
-    private HashSet<Vector2Int> RunRandomwalk(SimpleRandomWalkSO parameters)
+    protected HashSet<Vector2Int> RunRandomWalk(SimpleRandomWalkSO parameters, Vector2Int pos)
     {
-        var currentPos = startPos;
-        HashSet<Vector2Int> floorPos = new HashSet<Vector2Int>();
+        var currentPos = pos;
+        HashSet<Vector2Int> floorsPos = new HashSet<Vector2Int>();
 
         for(int i =0; i < parameters.iterations; i++)
         {
             var path = ProceduralAlgorithm.SimpleRandomWalk(currentPos, parameters.walkLength);
-            floorPos.UnionWith(path);
+            floorsPos.UnionWith(path);
 
             if(parameters.startRandomlyEachIteration)
             {
-                currentPos = floorPos.ElementAt(UnityEngine.Random.Range(0, floorPos.Count));
+                currentPos = floorsPos.ElementAt(UnityEngine.Random.Range(0, floorsPos.Count));
             }
         }
 
-        return floorPos;
+        return floorsPos;
     }
 
 }
