@@ -35,6 +35,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomMap
 
         for (int i = 0; i < corridors.Count; i++)
         {
+            //corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
             corridors[i] = IncreaseCorridorBrush3vt3(corridors[i]);
             floorsPos.UnionWith(corridors[i]);
         }
