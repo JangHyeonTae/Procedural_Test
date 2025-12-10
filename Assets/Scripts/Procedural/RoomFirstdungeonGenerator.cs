@@ -28,7 +28,14 @@ public class RoomFirstdungeonGenerator : SimpleRandomMap
             minRoomHeight);
 
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
-        floor = CreateSimpleRooms(roomsList);
+        if(randomWalkRooms)
+        {
+            floor = CreateRoomsRandomly(roomsList);
+        }
+        else
+        {
+            floor = CreateSimpleRooms(roomsList);
+        }
 
         // 이전 방들 빼주기(현재 방이 중심인걸로 변경?)
         List<Vector2Int> roomCenters = new List<Vector2Int>();
@@ -42,6 +49,31 @@ public class RoomFirstdungeonGenerator : SimpleRandomMap
 
         tilemapVisualizer.PaintFloorTiles(floor);
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
+    }
+
+    private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)
+    {
+        HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
+        for(int i = 0; i < roomsList.Count; i++)
+        {
+            var roomBounds = roomsList[i];
+            var roomCenter = new Vector2Int(Mathf.RoundToInt(roomBounds.center.x), Mathf.RoundToInt(roomBounds.center.y));
+            var roomFloor = RunRandomWalk(randomWalkParameters, roomCenter);
+            
+            foreach (var pos in roomFloor)
+            {
+                if (pos.x >= (roomBounds.xMin + offset) &&
+                    pos.x <= (roomBounds.xMax - offset) &&
+                    pos.y >= (roomBounds.yMin + offset) &&
+                    pos.y <= (roomBounds.yMax - offset))
+                {
+                    floor.Add(pos);
+                }
+
+            }
+        }
+
+        return floor;
     }
 
     private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters)
