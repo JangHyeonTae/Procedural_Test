@@ -10,7 +10,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomMap
     [SerializeField] private int corridorLength = 14;
     [SerializeField] private int corridorCount = 5;
 
-    [SerializeField][Range(0.1f, 1f)] private float roomPercent;
+    [SerializeField][Range(0.1f, 1f)] private float roomPercent = 0.8f;
     
     protected override void RunProceduralGeneration()
     {
@@ -33,12 +33,6 @@ public class CorridorFirstDungeonGenerator : SimpleRandomMap
 
         floorsPos.UnionWith(roomsPos);
 
-        for (int i = 0; i < corridors.Count; i++)
-        {
-            //corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
-            corridors[i] = IncreaseCorridorBrush3vt3(corridors[i]);
-            floorsPos.UnionWith(corridors[i]);
-        }
 
         tilemapVisualizer.PaintFloorTiles(floorsPos);
         WallGenerator.CreateWalls(floorsPos, tilemapVisualizer);
